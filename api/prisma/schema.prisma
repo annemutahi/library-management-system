@@ -13,11 +13,12 @@ enum Role {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  name      String
-  email     String   @unique
-  role      Role     @default(PATRON)
-  createdAt DateTime @default(now())
+  id           Int      @id @default(autoincrement())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(PATRON)
+  createdAt    DateTime @default(now())
 }
 
 model Genre {
@@ -33,6 +34,7 @@ model Book {
   author          String
   isbn            String   @unique
   publicationYear Int
+  totalCopies     Int      @default(1)
   genreId         Int
   genre           Genre    @relation(fields: [genreId], references: [id], onDelete: Restrict)
   createdAt       DateTime @default(now())

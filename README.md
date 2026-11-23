@@ -20,3 +20,37 @@ For a development database, create and apply a migration with `npm run db:migrat
 The `User` model uses the `Role` enum so only the supported `PATRON` and `LIBRARIAN` values can be stored. Book ISBNs, genre names, and user emails are unique identifiers.
 
 One difference from a document database is that Prisma models this catalog as related records and explicit foreign keys. A book's genre is loaded through a relation instead of being copied into an embedded document, and the database can enforce referential integrity.
+
+## API
+
+The NestJS API runs from `api/`. Copy `.env.example` to `.env`, set both
+`DATABASE_URL` and a private, long-random `JWT_SECRET`, then generate the client
+and apply migrations:
+
+```sh
+npm install
+npm run prisma:generate
+npm run db:deploy
+npm run start
+```
+
+Authentication is available at `POST /auth/register` and `POST /auth/login`.
+Book reads are public; creating, updating, and deleting books require a bearer
+token issued to a `LIBRARIAN` account. Book listing accepts `genreId`,
+`search` (matching title or author), `page`, and `limit` query parameters.
+Genre and book CRUD requests and the authentication requests are available in
+`docs/postman_collection.json`.
+
+## Client
+
+The React client runs from `client/`. Install its dependencies and start the
+Vite development server:
+
+```sh
+cd client
+npm install
+npm run dev
+```
+
+The client reads `VITE_API_URL` from `client/.env` (defaulting to
+`http://localhost:3000`) to connect to the NestJS API.

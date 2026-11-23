@@ -1,0 +1,107 @@
+{
+  "info": {
+    "_postman_id": "66c677f0-a6e2-47a6-a599-035601dce5d2",
+    "name": "Library Management API",
+    "description": "Authentication, book, and genre endpoints.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "token", "value": "" },
+    { "key": "genreId", "value": "1" },
+    { "key": "bookId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"name\":\"Library User\",\"email\":\"user@example.com\",\"password\":\"password123\"}", "options": { "raw": { "language": "json" } } },
+            "url": "{{baseUrl}}/auth/register"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"email\":\"user@example.com\",\"password\":\"password123\"}", "options": { "raw": { "language": "json" } } },
+            "url": "{{baseUrl}}/auth/login"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Genres",
+      "item": [
+        {
+          "name": "Create genre",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"name\":\"Mystery\",\"description\":\"Mystery and suspense.\"}", "options": { "raw": { "language": "json" } } },
+            "url": "{{baseUrl}}/genres"
+          }
+        },
+        { "name": "List genres", "request": { "method": "GET", "url": "{{baseUrl}}/genres" } },
+        { "name": "Get genre", "request": { "method": "GET", "url": "{{baseUrl}}/genres/{{genreId}}" } },
+        {
+          "name": "Update genre",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\"description\":\"Updated description.\"}", "options": { "raw": { "language": "json" } } },
+            "url": "{{baseUrl}}/genres/{{genreId}}"
+          }
+        },
+        { "name": "Delete genre", "request": { "method": "DELETE", "url": "{{baseUrl}}/genres/{{genreId}}" } }
+      ]
+    },
+    {
+      "name": "Books",
+      "item": [
+        {
+          "name": "Create book",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\"title\":\"The Example Book\",\"author\":\"A. Writer\",\"isbn\":\"9781234567890\",\"totalCopies\":3,\"genreId\":{{genreId}}}", "options": { "raw": { "language": "json" } } },
+            "url": "{{baseUrl}}/books"
+          }
+        },
+        {
+          "name": "List books",
+          "request": { "method": "GET", "url": "{{baseUrl}}/books?genreId={{genreId}}&search=example&page=1&limit=20" }
+        },
+        { "name": "Get book", "request": { "method": "GET", "url": "{{baseUrl}}/books/{{bookId}}" } },
+        {
+          "name": "Update book",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ],
+            "body": { "mode": "raw", "raw": "{\"totalCopies\":5}", "options": { "raw": { "language": "json" } } },
+            "url": "{{baseUrl}}/books/{{bookId}}"
+          }
+        },
+        {
+          "name": "Delete book",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": "{{baseUrl}}/books/{{bookId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
